@@ -1,0 +1,54 @@
+&lt;?php
+interface files {
+    public function getFileInfo($fileName);
+    public function openFile($mod, $filename);
+    public function closeFile($file);
+}
+class file implements files {
+    public $name;
+    public $size;
+    public $type;
+    public $accessTime;
+    public $modifyTime;
+    public $changeTime;
+    protected $files;
+    public function getFileInfo($fileName) {
+        $fileStat = stat($fileName);
+        $this->name = $fileName;
+        $this->size = $fileStat['size'];
+        $this->accessTime = $fileStat['atime'];
+        $this->modifyTime = $fileStat['mtime'];
+        $this->changeTime = $fileStat['ctime'];
+    }
+    public function openFile($openMod = 'r', $fileName = null) {
+//        try {
+//            if (!is_readable($fileName)) :
+//                throw new Exception('file cannot be read', 501);
+//            endif;
+//            if (!file_exists($fileName)) :
+//                throw new Exception('file does not exist', 404);
+//            endif;
+//        } catch (Exception $e) {
+//            if ($e->getCode() == 501) :
+//                die($e->getMessage() . "\non line:" . $e->getLine() . "\n" . $e->getFile());
+//            endif;
+//            if ($e->getCode() == 404) :
+//                die($e->getMessage() . "\non line:" . $e->getLine() . "\n" .$e->getFile());
+//            endif;
+//        }
+        if (isset($fileName)) {
+            $file = fopen($fileName, $openMod);
+        } else {
+            $file = fopen($this->name, $openMod);
+        }
+        $this->files = $file;
+        return $file;
+    }
+    public function closeFile($file = null) {
+        if (isset($file)):
+            fclose($file);
+        else:
+            fclose($this->files);
+        endif;
+    }
+}
