@@ -1,7 +1,7 @@
 <?php
-require_once 'database/DB.php';
+//require_once 'database/DB.php';
 //require_once 'format/format.php';
-require_once 'errcode/errmsg.php';
+//require_once 'errcode/errmsg.php';
 require_once 'autoload.php';
 class api {
     public $request;
@@ -11,6 +11,15 @@ class api {
         $this->config['api'] = $api;
         $this->config['param'] = $param;
         $this->config['format'] = $format;
+    }
+    public function read() {
+
+    }
+    public function write() {
+
+    }
+    public function checkData() {
+
     }
     public function response() {
         require_once __DIR__ . '/api/memorandum.api.php';
@@ -30,9 +39,12 @@ class api {
 
     }
 }
+
+
+
 if (isset($_GET['api'])) {
     $api = new api();
-    $api->request($_GET['api'], ['length' => $_GET['length']]);
+    $api->request($_GET['api'], ['length' => $_GET['length']], 'xml');
     echo $api-> response();
 }
 
